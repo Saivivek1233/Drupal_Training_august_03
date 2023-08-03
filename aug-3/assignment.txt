@@ -1,0 +1,146 @@
+<?php
+
+ 
+
+class Product{
+
+    public $product_id;
+    public $product_name;
+    public $product_price;
+
+    function __construct()
+    {
+        $this->product_id = readline("Enter the Product id:");
+        $this->product_name = readline("Enter the Product name:");
+        $this->product_price = readline("Enter the Product price:");
+    }
+
+    function setProdDetails()
+    {
+        $choice = readline("Press 1. to change id Press 2. to change name Press 3. to change price");
+        if($choice=='1')
+             $this->product_id = readline("Enter the Product id:");
+        elseif($choice=='2') 
+            $this->product_name = readline("Enter the Product name:");
+        else
+            $this->product_price = readline("Enter the Product price:");
+    }
+
+    function display()
+    {
+        echo "Employee Id = " .$this->product_id .PHP_EOL;
+        echo "Employee name = " .$this->product_name .PHP_EOL;
+    }
+}
+
+ 
+
+$product_list = array();
+
+ 
+
+do
+{
+    echo "Options 1.insert 2.update 3.delete 4.display 5.search 6.sort 7.reverse 8.exit". PHP_EOL;
+    $ch = readline("Enter the choice:");
+    switch ($ch) {
+
+        case '1':
+            $ob = new Product();
+            array_push($product_list,$ob);
+            break;
+
+        case '2':
+            $id = readline("Enter the product id you want to update: ");
+            $flag = 1;
+            for($i=0;$i<sizeof($product_list);$i++)
+            {
+                if( $product_list[$i]->product_id == $id)
+                {
+                    $product_list[$i]->setProdDetails();
+                    echo "Successfully updated ". PHP_EOL;
+                    $flag = 0;
+                }
+            }
+            if($flag == 1)
+                 echo "Sorry the id you are searching doesnot exist". PHP_EOL;
+            break;
+
+        case '3':
+            $id = readline("Enter the product id you want to delete: ");
+            $flag = 1;
+            for($i=0;$i<sizeof($product_list);$i++)
+            {
+                if( $product_list[$i]->product_id == $id)
+                {
+                    unset($product_list[$i]);
+                    echo "Product deleted Successfully".PHP_EOL;
+                    $flag = 0;
+                }
+            }
+            if($flag == 1)
+                 echo "Sorry the id you are searching doesnot exist". PHP_EOL;
+            break;
+
+        case '4':
+            for($i=0;$i<sizeof($product_list);$i++)
+            {
+                $product_list[$i]->display();
+            }
+            break;
+
+        case '5':
+            $id = readline("Enter the product id you want to search: ");
+            $flag = 1;
+            for($i=0;$i<sizeof($product_list);$i++)
+            {
+                if( $product_list[$i]->product_id == $id)
+                {
+                    $product_list[$i]->display();
+                    echo "Product Found ". PHP_EOL;
+                    $flag = 0;
+                }
+            }
+            if($flag == 1)
+                 echo "Sorry the id you are searching doesnot exist ". PHP_EOL;
+            break;
+
+        case '6':
+
+            for($i=0;$i<sizeof($product_list);$i++)
+            {
+                for($j=0;$j<sizeof($product_list)-1;$j++)
+                {
+                    if ($product_list[$j]->product_id > $product_list[$j + 1]->product_id) 
+                    {
+                        $temp = $product_list[$j];
+                        $product_list[$j] = $product_list[$j + 1];
+                        $product_list[$j + 1] = $temp;
+                    }
+                }
+            }
+            break;
+
+        case '7':
+
+ 
+
+            for ($i = 0; $i < sizeof($product_list); $i++) 
+            {
+                for ($j = 0; $j < sizeof($product_list) - 1; $j++)
+                {
+                    if ($product_list[$j]->product_id < $product_list[$j + 1]->product_id) 
+                    { 
+                        $temp = $product_list[$j];
+                        $product_list[$j] = $product_list[$j + 1];
+                        $product_list[$j + 1] = $temp;
+                    }
+                }
+            }
+            break;
+        default:
+            echo "Invalid choice" .PHP_EOL;
+            break;
+    }
+
+}while($ch!=8);
